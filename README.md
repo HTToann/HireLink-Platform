@@ -1,17 +1,18 @@
 # HireLink Platform
 
-A backend application designed to manage job applications and hiring workflows efficiently. The system is built with Java, Spring Boot, and Maven, with clean configuration, scalable project structure, and secure credential handling.
+A backend application designed to manage job applications and hiring workflows efficiently. Built using Java, Spring Boot, and Maven, with MongoDB for data persistence and WebSocket support for real-time updates.
 
 ## Features
 
-- Job application model and basic domain structure
-- RESTful backend built with Spring Boot
+- Job application model and domain structure
+- RESTful API built with Spring Boot
+- MongoDB for data storage
+- WebSocket support for real-time communication
 - Custom argument resolver for user context injection
 - S3 configuration for cloud storage integration
-- Maven Wrapper included for ease of building
-- Properties-based configuration (`application.properties`)
-- Clean Git history without leaked secrets
-- Ready to integrate with authentication, database, or third-party APIs
+- Maven Wrapper included for easy build and run
+- application.properties for environment config
+- Clean Git history with no leaked secrets
 
 ## Project Structure
 
@@ -24,11 +25,11 @@ HireLink-Platform/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/jb/
-│   │   │   ├── JobApplication.java         # Domain model
+│   │   │   ├── JobApplication.java
 │   │   │   └── configs/
 │   │   └── resources/
-│   │       └── application.properties      # Configuration file
-│   └── test/                              
+│   │       └── application.properties
+│   └── test/
 ```
 
 ## Getting Started
@@ -36,8 +37,9 @@ HireLink-Platform/
 ### Prerequisites
 
 - Java 17+
-- Maven or Maven Wrapper (`mvnw`/`mvnw.cmd`)
-- IDE (IntelliJ, VS Code, Eclipse, etc.)
+- Maven or Maven Wrapper
+- MongoDB running locally or remotely
+- IDE (e.g., IntelliJ, VS Code)
 
 ### Setup Instructions
 
@@ -60,16 +62,16 @@ HireLink-Platform/
    ./mvnw spring-boot:run
    ```
 
-4. **Access the API (if enabled)**
-
-   - Visit `http://localhost:8080` or your configured port
+4. **Access the API**
+   - API: `http://localhost:8080`
 
 ## Main Java Dependencies
 
 - Spring Boot
 - Spring Web
+- Spring Data MongoDB
+- Spring WebSocket
 - AWS SDK (S3)
-- Lombok (if configured in `pom.xml`)
-- Spring Context
+- Lombok
 
-See `pom.xml` for the full list of dependencies.
+See `pom.xml` for the full list.
