@@ -1,10 +1,10 @@
-# 🚀 HireLink Platform – Fullstack Hire-Link
+# HireLink Platform – Fullstack Hire-Link
 
 A full-stack hire-link platform built with **Java Spring Boot**, **React.js**, **MongoDB**, and **Docker Compose** for easy deployment.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 HireLink-Platform/
@@ -16,7 +16,7 @@ HireLink-Platform/
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React.js,TypeScript,Mantine, TailwindCSS
 - **Backend**: Java 21, Spring Boot, MongoDB, WebSocket
@@ -26,9 +26,9 @@ HireLink-Platform/
 
 ---
 
-## 🧑‍💻 Getting Started (Manual)
+## Getting Started (Manual)
 
-### 🔧 Backend (Spring Boot)
+### Backend (Spring Boot)
 
 ```bash
 cd hire-link-be
@@ -37,11 +37,11 @@ cd hire-link-be
 # Accessible at http://localhost:8080
 ```
 
-> ⚠️ Make sure MongoDB is running locally or update the URI in `application.properties`.
+>  Make sure MongoDB is running locally or update the URI in `application.properties`.
 
 ---
 
-### 💻 Frontend (React)
+### Frontend (React)
 
 ```bash
 cd hire-link-fe
@@ -58,11 +58,11 @@ REACT_APP_API_URL=http://localhost:8080
 
 ---
 
-## 🐳 Getting Started with Docker
+## Getting Started with Docker
 
 > Make sure [Docker](https://www.docker.com/products/docker-desktop) is installed.
 
-### 📦 Build & Run
+### Build & Run
 
 ```bash
 docker-compose up --build
@@ -75,9 +75,9 @@ docker-compose up --build
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
-### 🔐 `hire-link-be/src/main/resources/application.properties`
+### `hire-link-be/src/main/resources/application.properties`
 
 ```properties
 spring.data.mongodb.uri=mongodb://mongo:27017/hirelink
@@ -86,7 +86,7 @@ aws.accessKeyId=your-access-key
 aws.secretAccessKey=your-secret-key
 ```
 
-### 📁 `hire-link-fe/.env.production`
+### `hire-link-fe/.env.production`
 
 ```env
 REACT_APP_API_URL=http://localhost:8080
@@ -94,7 +94,7 @@ REACT_APP_API_URL=http://localhost:8080
 
 ---
 
-## 📜 Available Scripts (Frontend)
+## Available Scripts (Frontend)
 
 - `npm run dev`: Start dev server
 - `npm run build`: Build production bundle
@@ -102,7 +102,7 @@ REACT_APP_API_URL=http://localhost:8080
 
 ---
 
-## ✅ Features
+## Features
 
 - [x] User Registration & Login
 - [x] Job Posting (Employer)
@@ -114,6 +114,6 @@ REACT_APP_API_URL=http://localhost:8080
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
