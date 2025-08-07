@@ -1,0 +1,12 @@
+# 🧠 Những file/folder không cần copy vào Docker image
+target/
+.idea/
+*.iml
+*.log
+*.env
+.git
+.gitignore
+Dockerfile
+README.md
+*.md
+.vscode/
