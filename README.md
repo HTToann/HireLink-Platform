@@ -18,7 +18,7 @@ HireLink-Platform/
 
 ## Tech Stack
 
-- **Frontend**: React.js,TypeScript,Mantine, TailwindCSS
+- **Frontend**: React.js, TypeScript, Mantine, TailwindCSS
 - **Backend**: Java 21, Spring Boot, MongoDB, WebSocket
 - **Database**: MongoDB
 - **Infra**: Docker, Docker Compose
