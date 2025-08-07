@@ -1,156 +1,119 @@
-\# HireLink Platform
+# 🚀 HireLink Platform – Fullstack Hire-Link
 
+A full-stack hire-link platform built with **Java Spring Boot**, **React.js**, **MongoDB**, and **Docker Compose** for easy deployment.
 
+---
 
-A backend application designed to manage job applications and hiring workflows efficiently. Built using Java, Spring Boot, and Maven, with MongoDB for data persistence and WebSocket support for real-time updates.
-
-
-
-\## Features
-
-
-
-\- Job application model and domain structure
-
-\- RESTful API built with Spring Boot
-
-\- MongoDB for data storage
-
-\- WebSocket support for real-time communication
-
-\- Custom argument resolver for user context injection
-
-\- S3 configuration for cloud storage integration
-
-\- Maven Wrapper included for easy build and run
-
-\- application.properties for environment config
-
-\- Clean Git history with no leaked secrets
-
-
-
-\## Project Structure
-
-
+## 📁 Project Structure
 
 ```
-
 HireLink-Platform/
-
-├── mvnw, mvnw.cmd 
-
-├── pom.xml       
-
-├── .gitignore
-
-├── README.md
-
-├── src/
-
-│   ├── main/
-
-│   │   ├── java/com/jb/
-
-│   │   │   ├── JobApplication.java
-
-│   │   │   └── configs/
-
-│   │   └── resources/
-
-│   │       └── application.properties
-
-│   └── test/
-
+├── hire-link-be/        → Backend (Spring Boot)
+├── hire-link-fe/        → Frontend (React)
+├── docker-compose.yml   → Docker Compose file for both FE + BE
+└── README.md
 ```
 
+---
 
+## ⚙️ Tech Stack
 
-\## Getting Started
+- **Frontend**: React.js,TypeScript,Mantine, TailwindCSS
+- **Backend**: Java 21, Spring Boot, MongoDB, WebSocket
+- **Database**: MongoDB
+- **Infra**: Docker, Docker Compose
+- **Others**: AWS S3 (for file upload), Maven Wrapper
 
+---
 
+## 🧑‍💻 Getting Started (Manual)
 
-\### Prerequisites
+### 🔧 Backend (Spring Boot)
 
+```bash
+cd hire-link-be
+./mvnw clean install
+./mvnw spring-boot:run
+# Accessible at http://localhost:8080
+```
 
+> ⚠️ Make sure MongoDB is running locally or update the URI in `application.properties`.
 
-\- Java 17+
+---
 
-\- Maven or Maven Wrapper
+### 💻 Frontend (React)
 
-\- MongoDB running locally or remotely
+```bash
+cd hire-link-fe
+npm install
+npm run dev
+# Accessible at http://localhost:3000
+```
 
-\- IDE (e.g., IntelliJ, VS Code)
+> Edit `.env.production` to match backend API URL:
 
+```env
+REACT_APP_API_URL=http://localhost:8080
+```
 
+---
 
-\### Setup Instructions
+## 🐳 Getting Started with Docker
 
+> Make sure [Docker](https://www.docker.com/products/docker-desktop) is installed.
 
+### 📦 Build & Run
 
-1\. \*\*Clone the repository\*\*
+```bash
+docker-compose up --build
+```
 
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8080
 
+> If you encounter port conflicts, adjust them in `docker-compose.yml`.
 
-&nbsp;  ```sh
+---
 
-&nbsp;  git clone https://github.com/HTToann/HireLink-Platform.git
+## ⚙️ Environment Variables
 
-&nbsp;  cd HireLink-Platform
+### 🔐 `hire-link-be/src/main/resources/application.properties`
 
-&nbsp;  ```
+```properties
+spring.data.mongodb.uri=mongodb://mongo:27017/hirelink
+aws.s3.bucket=your-bucket
+aws.accessKeyId=your-access-key
+aws.secretAccessKey=your-secret-key
+```
 
+### 📁 `hire-link-fe/.env.production`
 
+```env
+REACT_APP_API_URL=http://localhost:8080
+```
 
-2\. \*\*Build the project\*\*
+---
 
+## 📜 Available Scripts (Frontend)
 
+- `npm run dev`: Start dev server
+- `npm run build`: Build production bundle
+- `npm run preview`: Preview built app
 
-&nbsp;  ```sh
+---
 
-&nbsp;  ./mvnw clean install
+## ✅ Features
 
-&nbsp;  ```
+- [x] User Registration & Login
+- [x] Job Posting (Employer)
+- [x] Job Application (Applicant)
+- [x] WebSocket for live updates
+- [x] AWS S3 File Upload
+- [x] REST API with Spring Boot
+- [x] MongoDB for document storage
 
+---
 
+## 📄 License
 
-3\. \*\*Run the application\*\*
-
-
-
-&nbsp;  ```sh
-
-&nbsp;  ./mvnw spring-boot:run
-
-&nbsp;  ```
-
-
-
-4\. \*\*Access the API\*\*
-
-&nbsp;  - API: `http://localhost:8080`
-
-
-
-\## Main Java Dependencies
-
-
-
-\- Spring Boot
-
-\- Spring Web
-
-\- Spring Data MongoDB
-
-\- Spring WebSocket
-
-\- AWS SDK (S3)
-
-\- Lombok
-
-
-
-See `pom.xml` for the full list.
-
-
-
+This project is licensed under the MIT License.
