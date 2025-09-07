@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head từ fragment styles + chèn thêm asset trang stats -->
+<head th:replace="~{base :: styles('Thống kê hệ thống', ~{::extraHead})}">
+  <th:block th:fragment="extraHead">
+    <link rel="stylesheet" th:href="@{/css/stats.css}">
+    <!-- Chart.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap data từ Thymeleaf sang JS -->
+    <script th:inline="javascript">
+      window.statsData = {
+        employerCount : /*[[${employerCount}]]*/ 0,
+        applicantCount: /*[[${applicantCount}]]*/ 0,
+        totalJobs     : /*[[${totalJobs}]]*/ 0,
+        jobsThisWeek  : /*[[${jobsThisWeek}]]*/ 0,
+        jobsThisMonth : /*[[${jobsThisMonth}]]*/ 0
+      };
+    </script>
+    <!-- Page JS -->
+    <script defer th:src="@{/js/stats.js}"></script>
+  </th:block>
+</head>
+
+<body class="d-flex">
+
+<!-- Sidebar -->
+<div th:replace="~{base :: sidebar}"></div>
+
+<!-- Main Content Layout -->
+<div class="main-content w-100 d-flex flex-column min-vh-100">
+  <main class="container my-5 flex-grow-1">
+    <h2 class="text-info text-center mb-4">📊 Thống kê</h2>
+
+    <!-- Nút chọn thống kê -->
+    <div class="text-center mb-4">
+      <button class="btn btn-outline-info me-2" data-chart-target="user">📊 Người dùng</button>
+      <button class="btn btn-outline-warning" data-chart-target="job">📊 Công việc</button>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="stat-container">
+      <div id="userChartBox" class="chart-box">
+        <canvas id="userTypeChart"></canvas>
+      </div>
+
+      <div id="jobChartBox" class="chart-box" style="display: none;">
+        <canvas id="jobPostedChart"></canvas>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div th:replace="~{base :: footer}"></div>
+</div>
+</body>
+</html>

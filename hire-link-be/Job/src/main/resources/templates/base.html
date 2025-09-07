@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<!-- HEAD FRAGMENT -->
+<head th:fragment="styles(title, extraHead)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${title} ?: 'HireLink Admin'">HireLink Admin</title>
+
+  <!-- CDN chung -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/base.css}"/>
+
+  <!-- chỗ cắm thêm (tuỳ trang) -->
+  <th:block th:replace="${extraHead}"></th:block>
+</head>
+
+<body>
+
+<!-- SIDEBAR FRAGMENT -->
+<nav class="sidebar d-flex flex-column" th:fragment="sidebar">
+  <h4 class="text-info fw-bold mb-4">HireLink Admin</h4>
+  <a class="nav-link" th:href="@{/}" sec:authorize="isAuthenticated()">
+    <i class="bi bi-house-door"></i> Trang chủ
+  </a>
+  <a class="nav-link" th:href="@{/admin/users}" sec:authorize="isAuthenticated()">
+    <i class="bi bi-people"></i> Users
+  </a>
+  <a class="nav-link" th:href="@{/admin/jobs}" sec:authorize="isAuthenticated()">
+    <i class="bi bi-briefcase"></i> Jobs
+  </a>
+  <a class="nav-link" th:href="@{/admin/stats}" sec:authorize="isAuthenticated()">
+    <i class="bi bi-bar-chart-line"></i> Stats
+  </a>
+  <div class="mt-auto">
+    <div class="text-white-50 small mb-2">
+      <i class="bi bi-person-circle"></i>
+      <span th:text="${#authentication.name}">Username</span>
+    </div>
+    <a class="nav-link text-danger" th:href="@{/logout}" sec:authorize="isAuthenticated()">
+      <i class="bi bi-box-arrow-right"></i> Đăng xuất
+    </a>
+  </div>
+</nav>
+
+<!-- FOOTER FRAGMENT -->
+<footer th:fragment="footer" class="w-100">
+  <div class="py-3 text-center text-white bg-dark">
+    <small>&copy; 2025 <strong>HireLink Admin</strong> by Troy Hoang</small>
+  </div>
+</footer>
+
+</body>
+</html>

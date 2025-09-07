@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head: dùng base + chèn thêm assets trang Jobs -->
+<head th:replace="~{base :: styles('Quản lý công việc', ~{::extraHead})}">
+    <th:block th:fragment="extraHead">
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+        <!-- Jobs page CSS -->
+        <link th:href="@{/css/jobs.css}" rel="stylesheet">
+        <!-- jQuery & DataTables (defer để tối ưu tải) -->
+        <script defer src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script defer src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script defer src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <!-- Jobs page JS -->
+        <script defer th:src="@{/js/jobs.js}"></script>
+    </th:block>
+</head>
+
+<body class="d-flex">
+<!-- Sidebar -->
+<div th:replace="~{base :: sidebar}"></div>
+
+<!-- Main Content -->
+<div class="main-content w-100 d-flex flex-column min-vh-100">
+    <main class="container my-5 flex-grow-1">
+
+        <!-- Alerts (đặt ngoài <table>) -->
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+        <div class="d-flex justify-content-between mb-4">
+            <h2 class="text-info">📋 Danh sách công việc</h2>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" id="search-box" class="form-control shadow-sm" placeholder="🔍 Nhập tiêu đề công việc...">
+        </div>
+
+        <table id="job-table" class="table table-dark table-hover table-bordered align-middle w-100">
+            <thead>
+            <tr>
+                <th>🎓 Tiêu đề</th>
+                <th>🏢 Công ty</th>
+                <th>🌐 Vị trí</th>
+                <th>📊 Trạng thái</th>
+                <th class="text-center">⚙️ Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="job : ${jobs}">
+                <td th:text="${job.jobTitle}">Tiêu đề</td>
+                <td th:text="${job.company}">Công ty</td>
+                <td th:text="${job.location}">Vị trí</td>
+                <td th:text="${job.jobStatus}">Trạng thái</td>
+                <td class="text-center">
+                    <a th:href="@{'/admin/jobs/delete/' + ${job.id}}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Bạn có chắc muốn xoá công việc này?')">🗑️ Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="~{base :: footer}"></div>
+</div>
+</body>
+</html>

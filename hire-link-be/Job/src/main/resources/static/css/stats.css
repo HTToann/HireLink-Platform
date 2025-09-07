@@ -1,0 +1,35 @@
+.stat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
+    min-height: 100vh;
+}
+
+.chart-box {
+    width: 450px;
+    height: 450px;
+    background: #1e1e2f;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Chart.js canvas scaling */
+.chart-box canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}
+
+/* Responsive: thu nhỏ box khi màn hẹp */
+@media (max-width: 576px) {
+    .chart-box {
+        width: 100%;
+        height: 320px;
+    }
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{base :: styles('Trang chủ', ~{::extraHead})}">
+    <th:block th:fragment="extraHead">
+        <link th:href="@{/css/index.css}" rel="stylesheet" />
+    </th:block>
+</head>
+<body>
+<div th:replace="~{base :: sidebar}"></div>
+<main class="content">
+    <div class="container py-5">
+        <div class="card-dark p-5 text-center">
+            <h2 class="text-info fw-bold mb-2">👋 Welcome to HireLink Admin</h2>
+            <p class="lead text-white-50">Use the sidebar to manage users, jobs and statistics.</p>
+        </div>
+    </div>
+    <div th:replace="~{base :: footer}"></div>
+</main>
+</body>
+</html>

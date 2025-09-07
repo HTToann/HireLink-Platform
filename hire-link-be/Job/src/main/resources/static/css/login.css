@@ -1,0 +1,17 @@
+/* Nền tổng thể (ghi đè nếu base đã set gradient) */
+body {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+}
+
+/* Thẻ card đăng nhập */
+.login-card {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Nhãn form */
+.login-card label {
+    color: #f1f1f1;
+}
