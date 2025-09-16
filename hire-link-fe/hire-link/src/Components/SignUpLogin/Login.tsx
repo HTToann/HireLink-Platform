@@ -55,7 +55,7 @@ const Login = () => {
                     console.log("Register failed:", err.response?.data.errorMessage || err.message);
                     setLoading(false);
                     console.log("err", err);
-                    errorNotification("Login Failed", err.response.data.errorMessage)
+                    errorNotification("Login Failed", "User not found")
 
                 });
         }

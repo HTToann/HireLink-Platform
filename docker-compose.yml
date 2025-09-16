@@ -4,6 +4,10 @@ services:
     container_name: mongodb
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: hirelink
     volumes:
       - mongo-data:/data/db
 
@@ -16,7 +20,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/jobportal
+      SPRING_DATA_MONGODB_URI: mongodb://admin:admin@mongodb:27017/hirelink?authSource=admin
 
   frontend:
     build:

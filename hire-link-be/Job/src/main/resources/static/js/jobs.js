@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
         language: {
             search: "🔍 Tìm kiếm:",
             lengthMenu: "Hiển thị _MENU_ dòng",
-            info: "Hiển thị _START_ đến _END_ của _TOTAL_ dòng",
-            paginate: { previous: "← Trước", next: "Tiếp →" }
+            info: "",
+            paginate: { previous: "← Trước", next: "Tiếp →" },
+            pageLength: 10,
+            order: [[0, 'asc']]
         },
         // Tùy chọn thêm:
         // pageLength: 10,

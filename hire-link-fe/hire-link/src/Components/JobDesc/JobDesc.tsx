@@ -221,7 +221,7 @@ const JobDesc = (props: any) => {
                     <Button color="shakeSpeare.9" variant="light" >Company Page</Button>
                 </Link> */}
             </div>
-            <div className="text-mine-shaft-300 " text-justify>{props.about}</div>
+            <div className="text-mine-shaft-500 " text-justify>{props.about}</div>
         </div>
     </div >
 }

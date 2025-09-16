@@ -77,18 +77,23 @@ const ExpInput = (props: any) => {
                 <SelectInput form={form} name="company"{...select[1]} />
             </div>
             <SelectInput form={form} name="location" {...select[2]} />
-            <Textarea {...form.getInputProps("description")} withAsterisk label="Summary"
+            <Textarea {...form.getInputProps("description")} className="text-mine-shaft-600 font-semibold" withAsterisk label="Summary"
                 autosize minRows={3} placeholder="Enter summary..." />
             <div className="flex gap-10 [&>_*]:w-1/2">
-                <MonthPickerInput {...form.getInputProps("startDate")} withAsterisk
+                <MonthPickerInput {...form.getInputProps("startDate")}
+                    className="text-mine-shaft-600 font-semibold"
+                    withAsterisk
                     maxDate={form.getValues().endDate || undefined} label="Start Date"
                     placeholder="Pick Date" />
-                <MonthPickerInput {...form.getInputProps("endDate")} disabled={form.getValues().working} withAsterisk
+                <MonthPickerInput {...form.getInputProps("endDate")} disabled={form.getValues().working}
+                    className="text-mine-shaft-600 font-semibold"
+                    withAsterisk
                     maxDate={new Date()}
                     minDate={form.getValues().startDate || undefined} label="End Date"
                     placeholder="Pick Date" />
             </div>
             <Checkbox checked={form.getValues().working}
+                className="text-mine-shaft-600 font-semibold"
                 onChange={(event) => form.setFieldValue("working", event.currentTarget.checked)}
                 autoContrast label="Currently working here" />
             <div className="flex gap-5">

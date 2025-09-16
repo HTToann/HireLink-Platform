@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,9 +31,10 @@ public class JobControllerApi {
     private S3Service s3Service;
 
 @PostMapping(value = "/post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+@PreAuthorize("hasRole('EMPLOYER')")
 public ResponseEntity<JobDTO> postJob(
-        @RequestPart("job") @Valid JobDTO jobDTO,
-        @RequestPart(value = "companyLogo", required = false) MultipartFile companyLogo
+    @RequestPart("job") @Valid JobDTO jobDTO,
+    @RequestPart(value = "companyLogo", required = false) MultipartFile companyLogo
 ) throws JobException, IOException {
     if (companyLogo != null && !companyLogo.isEmpty()) {
         // Tạo key duy nhất cho ảnh trên S3
@@ -47,37 +49,41 @@ public ResponseEntity<JobDTO> postJob(
 
     return new ResponseEntity<>(jobDTO, HttpStatus.CREATED);
 }
-    @GetMapping("/getAll")
-    public ResponseEntity<List<JobDTO>> getAllJobs() throws JobException {
-        return new ResponseEntity<>(jobService.getAllJobs(), HttpStatus.OK);
-    }
-    @GetMapping("/get/{id}")
-    public ResponseEntity<JobDTO> getJob(@PathVariable Long id) throws JobException {
-        return new ResponseEntity<>(jobService.getJobById(id), HttpStatus.OK);
-    }
-    @PostMapping("/apply/{id}")
-    public ResponseEntity<ResponeDTO> applyJob(@PathVariable Long id,
-                                               @RequestBody ApplicantDTO applicantDTO)
-            throws JobException {
-    jobService.applyJob(id, applicantDTO);
-    return new ResponseEntity<>(new ResponeDTO("Applied Successfully"), HttpStatus.OK);
-    }
-    @GetMapping("/postedBy/{id}")
-    public ResponseEntity<List<JobDTO>> getJobsPostedBy(@PathVariable Long id) throws JobException {
-        return new ResponseEntity<>(jobService.getJobsPostedBy(id), HttpStatus.OK);
-    }
-    @PatchMapping("/{id}/update-status")
-    public ResponseEntity<ResponeDTO> updateJobStatus(@PathVariable Long id,
-                                                      @RequestBody Map<String, String> body)
-            throws JobException {
-        JobStatus status = JobStatus.valueOf(body.get("jobStatus").toUpperCase());
-        jobService.updateStatusJob(id, status);
-        return new ResponseEntity<>(new ResponeDTO("Updated Successfully"), HttpStatus.OK);
-    }
-    @PostMapping("/changeAppStatus")
-    public ResponseEntity<ResponeDTO> changeAppliStatus(@RequestBody Application application)
-            throws JobException {
-        jobService.changeAppliStatus(application);
-        return new ResponseEntity<>(new ResponeDTO("Application Status Changed Successfully"), HttpStatus.OK);
-    }
+
+@GetMapping("/getAll")
+public ResponseEntity<List<JobDTO>> getAllJobs() throws JobException {
+    return new ResponseEntity<>(jobService.getAllJobs(), HttpStatus.OK);
+}
+@GetMapping("/get/{id}")
+public ResponseEntity<JobDTO> getJob(@PathVariable Long id) throws JobException {
+    return new ResponseEntity<>(jobService.getJobById(id), HttpStatus.OK);
+}
+@PostMapping("/apply/{id}")
+@PreAuthorize("hasRole('APPLICANT')")
+public ResponseEntity<ResponeDTO> applyJob(@PathVariable Long id,
+                                           @RequestBody ApplicantDTO applicantDTO)
+        throws JobException {
+jobService.applyJob(id, applicantDTO);
+return new ResponseEntity<>(new ResponeDTO("Applied Successfully"), HttpStatus.OK);
+}
+@GetMapping("/postedBy/{id}")
+public ResponseEntity<List<JobDTO>> getJobsPostedBy(@PathVariable Long id) throws JobException {
+    return new ResponseEntity<>(jobService.getJobsPostedBy(id), HttpStatus.OK);
+}
+@PatchMapping("/{id}/update-status")
+@PreAuthorize("hasRole('EMPLOYER')")
+public ResponseEntity<ResponeDTO> updateJobStatus(@PathVariable Long id,
+                                                  @RequestBody Map<String, String> body)
+        throws JobException {
+    JobStatus status = JobStatus.valueOf(body.get("jobStatus").toUpperCase());
+    jobService.updateStatusJob(id, status);
+    return new ResponseEntity<>(new ResponeDTO("Updated Successfully"), HttpStatus.OK);
+}
+@PostMapping("/changeAppStatus")
+@PreAuthorize("hasRole('EMPLOYER')")
+public ResponseEntity<ResponeDTO> changeApplyStatus(@RequestBody Application application)
+        throws JobException {
+    jobService.changeAppliStatus(application);
+    return new ResponseEntity<>(new ResponeDTO("Application Status Changed Successfully"), HttpStatus.OK);
+}
 }

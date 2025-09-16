@@ -17,7 +17,7 @@ public class JwtUtils {
 
     // SECRET nên được lưu bằng biến môi trường,
     private static final String SECRET = "12345678901234567890123456789012";
-    private static final long EXPIRATION_MS = 1 * 60 * 1000; // 1 ngày
+    private static final long EXPIRATION_MS = 30 * 60 * 1000; // 1 ngày
 //;86400000
     public static String generateToken(UserDetails userDetails) throws Exception {
         CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;

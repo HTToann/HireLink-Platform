@@ -83,7 +83,7 @@ const testimonials = [
         "avatar": "toan2.jpg"
     },
     {
-        "name": "Thomas Hoang",
+        "name": "Troy Hoang",
         "testimonial": "I secured a job offer within days of applying. Exceptional user experience and support.",
         "rating": 4,
         "avatar": "toan3.jpg"
