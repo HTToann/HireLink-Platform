@@ -17,6 +17,7 @@ import java.util.Set;
 public class ChatMessage {
     @Id
     private Long id;
+    private String clientId;
     private String sender;
     private String senderName;
     private String senderAvatarUrl;

@@ -56,7 +56,7 @@ const ChatLayout = () => {
             {/* Sidebar */}
             <div className="w-64 bg-gray-200 p-4 border-r">
                 <h2 className="text-lg text-mine-shaft-700 font-semibold mb-4">Chats</h2>
-                <ul className="text-mine-shaft-700 text-sm font-semibold">
+                <ul className="text-mine-shaft-700 text-sm font-semibold list-none">
                     {contacts.map((contact) => (
                         <li
                             key={contact.id}
@@ -66,31 +66,32 @@ const ChatLayout = () => {
                                 setContextMenuContactId(contact.id);
                             }}
                         >
-                            <div className="flex items-center space-x-2 pr-8"> {/* dành chỗ bên phải cho nút */}
-                                <span className="w-2 h-2 bg-gray-700 rounded-full"></span>
-                                <button
-                                    onClick={() => handleOpenChat(contact)}
-                                    className="flex items-center space-x-2 hover:bg-gray-300 px-2 py-1 rounded w-full text-left"
-                                >
-                                    <img
-                                        src={contact.avatarUrl || '/default-avatar.png'}
-                                        alt={contact.name}
-                                        className="w-8 h-8 rounded-full object-cover"
-                                    />
-                                    <span>{contact.name}</span>
-                                </button>
-                            </div>
+                            <button
+                                onClick={() => handleOpenChat(contact)}
+                                className="flex items-center space-x-2 hover:bg-gray-300 px-2 py-1 rounded w-full text-left"
+                            >
+                                {/* Chấm tròn nhỏ */}
+                                <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
 
-                            {/* Nút delete hiện khi hover hoặc context menu */}
+                                {/* Avatar */}
+                                <img
+                                    src={contact.avatarUrl || '/default-avatar.png'}
+                                    alt={contact.name}
+                                    className="w-8 h-8 rounded-full object-cover"
+                                />
+                                <span>{contact.name}</span>
+                            </button>
+
+                            {/* Nút delete */}
                             {(contextMenuContactId === contact.id || contextMenuContactId === null) && (
                                 <button
                                     className={`
-    absolute right-2 top-1/2 -translate-y-1/2 
-    p-1 text-gray-500 hover:text-red-500
-    bg-white hover:bg-red-100 rounded-full
-    transition duration-200
-    ${contextMenuContactId === contact.id ? 'visible' : 'invisible group-hover:visible'}
-  `}
+            absolute right-2 top-1/2 -translate-y-1/2 
+            p-1 text-gray-500 hover:text-red-500
+            bg-white hover:bg-red-100 rounded-full
+            transition duration-200
+            ${contextMenuContactId === contact.id ? 'visible' : 'invisible group-hover:visible'}
+          `}
                                     onClick={() => handleDeleteContact(contact.id)}
                                     title="Delete chat"
                                 >

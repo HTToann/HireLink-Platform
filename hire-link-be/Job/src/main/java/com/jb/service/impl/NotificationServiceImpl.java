@@ -1,5 +1,6 @@
 package com.jb.service.impl;
 
+import com.jb.configs.LongPollRegistry;
 import com.jb.dto.NotificationDTO;
 import com.jb.entity.Notification;
 import com.jb.enums.NotificationStatus;
@@ -18,13 +19,19 @@ import java.util.List;
 public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private NotificationRepository notificationRepository;
-
+    @Autowired
+    private  LongPollRegistry<Notification> registry;
     @Override
     public void sendNotification(NotificationDTO notificationDTO) throws JobException {
         notificationDTO.setId(Ultis.getNextSequence("notification"));
         notificationDTO.setStatus(NotificationStatus.UNREAD);
         notificationDTO.setTimeStamp(LocalDateTime.now());
-        notificationRepository.save(notificationDTO.toEntity());
+
+        Notification entity = notificationDTO.toEntity();
+
+        Notification saved = notificationRepository.save(entity);
+
+        registry.publish(notificationDTO.getUserId(), List.of(saved));
     }
 
     @Override
@@ -53,12 +60,12 @@ public class NotificationServiceImpl implements NotificationService {
     public List<Notification> findNewNotifications(Long userId, String after) {
         LocalDateTime afterTime;
         if (after == null || after.isBlank()) {
-            afterTime = LocalDateTime.now().minusMinutes(5); // hoặc dùng LocalDateTime.MIN nếu muốn lấy hết
+            afterTime = LocalDateTime.now().minusMinutes(5);
         } else {
             try {
                 afterTime = LocalDateTime.parse(after); // Parse dạng ISO-8601
             } catch (DateTimeParseException e) {
-                throw new RuntimeException("❌ Invalid 'after' timestamp format: " + after);
+                throw new RuntimeException(" Invalid 'after' timestamp format: " + after);
             }
         }
         return this.notificationRepository.findByUserIdAndTimeStampAfter(userId,afterTime);

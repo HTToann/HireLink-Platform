@@ -1,5 +1,6 @@
 package com.jb.controller.chatting;
 
+import com.jb.configs.ChatLongPollRegistry;
 import com.jb.dto.NotificationDTO;
 import com.jb.dto.ProfileDTO;
 import com.jb.entity.ChatMessage;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,12 +32,9 @@ public class ChatController {
     private final ChatMessageRepository chatRepo;
     private final ProfileService profileService;
     private final NotificationService notificationService;
+    private final ChatLongPollRegistry registry;
     @MessageMapping("/chat.private")
     public void sendPrivateMessage(@Payload ChatMessage message, Principal principal) throws JobException {
-        if (principal == null) {
-            System.out.println("Principal is null");
-            return;
-        }
         Authentication authentication = (Authentication) principal;
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -43,39 +42,43 @@ public class ChatController {
         String senderEmail = userDetails.getUsername();
         String senderName = userDetails.getName();
 
-//        //log
-//        System.out.println("New message received");
-//        System.out.println("From: " + senderName + " (" + senderEmail + ")");
-//        System.out.println("To: " + message.getRecipient());
-//        System.out.println("Content: " + message.getContent());
         ProfileDTO sender = profileService.getProfile(senderId);
-        // Prepare message
+
+        // preserve clientId từ FE
+        String clientId = message.getClientId();
+
         message.setId(Ultis.getNextSequence("chat"));
+        message.setClientId(clientId);
         message.setSender(senderId.toString());
         message.setSenderName(senderName);
         message.setSenderAvatarUrl(sender.getPicture());
         message.setSenderEmail(senderEmail);
-
+        message.setTimestamp(LocalDateTime.now());
 
         Long recipientId = Long.parseLong(message.getRecipient());
         User recipient = userService.getUserById(recipientId);
-        ProfileDTO recipientProfile = profileService.getProfile(recipientId);
-        String recipientEmail = recipient.getEmail();
+
         message.setRecipient(recipientId.toString());
         message.setRecipientName(recipient.getName());
-        message.setRecipientEmail(recipientEmail);
-        message.setTimestamp(LocalDateTime.now());
+        message.setRecipientEmail(recipient.getEmail());
         sendNotification("Chatting",String.format("Do you have 1 message"),recipientId,String.format("/chat/%s",senderId));
+        ChatMessage saved = chatRepo.save(message);
 
+        registry.publish(recipientId, List.of(saved));
 
-        chatRepo.save(message);
-
+        // gửi cho recipient
         messagingTemplate.convertAndSendToUser(
-                message.getRecipientEmail(),
+                saved.getRecipientEmail(),
                 "/queue/messages",
-                message
+                saved
         );
 
+        // gửi lại cho sender (để FE replace optimistic)
+        messagingTemplate.convertAndSendToUser(
+                senderEmail,
+                "/queue/messages",
+                saved
+        );
     }
     private void sendNotification(String action,String message,Long userId,String route) {
         NotificationDTO notificationDTO = new NotificationDTO();

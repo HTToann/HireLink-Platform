@@ -11,7 +11,9 @@ import com.jb.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,7 +29,6 @@ public class ChatServiceImpl implements ChatService {
     private UserRepository userRepository;
     @Override
     public List<ChatDTO> getChatContacts(String currentUserId) {
-        // 🔁 Chỉ lấy tin nhắn không bị xóa mềm
         List<ChatMessage> messages = chatRepository.findAllConversationsVisibleToUser(currentUserId);
         Set<Long> contactIds = new HashSet<>();
 
@@ -66,15 +67,30 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatMessage> findNewMessages(String recipientId, String after) {
         LocalDateTime afterTime;
         if (after == null || after.isBlank()) {
-            afterTime = LocalDateTime.now().minusMinutes(5); // hoặc dùng LocalDateTime.MIN nếu muốn lấy hết
+            afterTime = LocalDateTime.now().minusMinutes(5);
         } else {
             try {
-                afterTime = LocalDateTime.parse(after); // Parse dạng ISO-8601
-            } catch (DateTimeParseException e) {
-                throw new RuntimeException("❌ Invalid 'after' timestamp format: " + after);
+                Instant instant = Instant.parse(after);
+                afterTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+            } catch (DateTimeParseException e1) {
+                try {
+                    afterTime = LocalDateTime.parse(after);
+                } catch (DateTimeParseException e2) {
+                    throw new RuntimeException("Invalid 'after' timestamp format: " + after);
+                }
             }
         }
-        return this.chatRepository.findByRecipientAndTimestampAfter(recipientId,afterTime);
+
+        // lấy tất cả message cho recipient sau thời điểm after
+        List<ChatMessage> msgs = chatRepository.findByRecipientAndTimestampAfter(recipientId, afterTime);
+
+        // dedupe theo clientId hoặc id
+        Map<String, ChatMessage> unique = new LinkedHashMap<>();
+        for (ChatMessage m : msgs) {
+            String key = (m.getClientId() != null ? m.getClientId() : "id:" + m.getId());
+            unique.putIfAbsent(key, m);
+        }
+        return new ArrayList<>(unique.values());
     }
 
     @Override

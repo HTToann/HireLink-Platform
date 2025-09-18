@@ -19,28 +19,36 @@ const NotiMenu = () => {
             });
     }, [user])
     useEffect(() => {
-        console.log("👤 Current user id:", user?.id);
         if (!user?.id) return;
 
         let isMounted = true;
         let lastTimestamp: string | null = null;
 
         const poll = async () => {
+            if (!isMounted) return;
+
             try {
+                // gọi API long-poll
                 const newNoti = await longPollNotification(user.id, lastTimestamp || '');
-                console.log("📡 Polling with lastTimestamp:", lastTimestamp);
+
                 if (!isMounted) return;
 
-                if (newNoti.length) {
-                    setNotifications((prev: any) => [...prev, ...newNoti]);
-                    lastTimestamp = newNoti[newNoti.length - 1].timeStamp; // tùy theo backend dùng 'createdAt' hay 'timestamp'
+                if (newNoti.length > 0) {
+                    setNotifications((prev: any) => {
+                        const existingIds = new Set(prev.map((n: any) => n.id));
+                        const fresh = newNoti.filter((n: any) => !existingIds.has(n.id));
+                        return [...prev, ...fresh];
+                    });
+
+                    lastTimestamp = newNoti[newNoti.length - 1].timeStamp;
                 }
             } catch (err) {
-                console.error("Polling error", err);
-            }
-
-            if (isMounted) {
-                poll(); // tiếp tục gọi
+                console.error('Polling error', err);
+            } finally {
+                // luôn gọi lại sau khi server trả (dù có lỗi hay không)
+                if (isMounted) {
+                    setTimeout(poll, 0); // gọi tiếp ngay lập tức (liền mạch như chat)
+                }
             }
         };
 
